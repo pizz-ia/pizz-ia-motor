@@ -10,6 +10,7 @@ def callback_upload_s3(bytes_uploaded):
     print(f"Bytes Uploaded: {bytes_uploaded}")
 
 if __name__ == "__main__":
+    display_on_lcd("test")
     print("App is running")
     cam = Camera()
     picture_path = cam.shoot(SAVE_PICTURE_PATH, "python-test")
