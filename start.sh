@@ -1,1 +1,1 @@
-modprobe v4l2_common && python src/app.py
+modprobe bcm2835-v4l2 && python src/app.py

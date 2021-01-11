@@ -8,12 +8,13 @@ class S3Client:
             endpoint_url=endpoint_url
         )
     
-    def create_bucket(bucket_name):
+    def create_bucket(self, bucket_name):
         self.client.Bucket(bucket_name).create()
+        self.client
 
         return self.client.Bucket(bucket_name)
     
-    def get_bucket(bucket_name):
+    def get_bucket(self, bucket_name):
         return self.client.Bucket(bucket_name)
 
     def put_object(bucket, file_path, object_key, callback=None):
