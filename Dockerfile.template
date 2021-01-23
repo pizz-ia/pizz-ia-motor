@@ -12,7 +12,13 @@ WORKDIR /usr/src/app
 # Copy requirements.txt first for better cache on later pushes
 COPY requirements.txt ./
 
-RUN apt update && apt install python3-dev gcc make -y && apt autoremove -y
+RUN apt update && \
+    apt install python-smbus \
+                python3-dev \
+                gcc \
+                i2c-tools \
+                make \
+                -y && apt autoremove -y
 # pip install python deps from requirements.txt on the resin.io build server
 RUN READTHEDOCS=True pip install --no-cache-dir -r requirements.txt
 
