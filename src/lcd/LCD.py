@@ -1,73 +1,14 @@
-"""Simple test for I2C RGB character LCD shield kit"""
-import time
-import board
-import busio
-import adafruit_character_lcd.character_lcd_rgb_i2c as character_lcd
+import Adafruit_CharLCD as adaLCD
 
 
 class LCD():
 
-    def __init__(self):
-        # Modify this if you have a different sized Character LCD
-        lcd_columns = 16
-        lcd_rows = 2
-
-        # Initialise I2C bus.
-        i2c = busio.I2C(board.SCL, board.SDA)
-        # Initialise the LCD class
-        lcd = character_lcd.Character_LCD_RGB_I2C(i2c, lcd_columns, lcd_rows, address=i2c.scan()[0])
-
-        lcd.clear()
-        # Set LCD color to red
-        lcd.color = [100, 0, 0]
-        time.sleep(1)
-        # Print two line message
-        lcd.message = "Hello\nCircuitPython"
-        # Wait 5s
-        time.sleep(5)
-        # Set LCD color to blue
-        lcd.color = [0, 100, 0]
-        time.sleep(1)
-        # Set LCD color to green
-        lcd.color = [0, 0, 100]
-        time.sleep(1)
-        # Set LCD color to purple
-        lcd.color = [50, 0, 50]
-        time.sleep(1)
-        lcd.clear()
-        # Print two line message right to left
-        lcd.text_direction = lcd.RIGHT_TO_LEFT
-        lcd.message = "Hello\nCircuitPython"
-        # Wait 5s
-        time.sleep(5)
-        # Return text direction to left to right
-        lcd.text_direction = lcd.LEFT_TO_RIGHT
-        # Display cursor
-        lcd.clear()
-        lcd.cursor = True
-        lcd.message = "Cursor! "
-        # Wait 5s
-        time.sleep(5)
-        # Display blinking cursor
-        lcd.clear()
-        lcd.blink = True
-        lcd.message = "Blinky Cursor!"
-        # Wait 5s
-        time.sleep(5)
-        lcd.blink = False
-        lcd.clear()
-        # Create message to scroll
-        scroll_msg = "<-- Scroll"
-        lcd.message = scroll_msg
-        # Scroll to the left
-        for i in range(len(scroll_msg)):
-            time.sleep(0.5)
-            lcd.move_left()
-        lcd.clear()
-        time.sleep(1)
-        lcd.message = "Going to sleep\nCya later!"
-        time.sleep(5)
-        # Turn off LCD backlights and clear text
-        lcd.color = [0, 0, 0]
-        lcd.clear()
-
+    def __init__(self, lcd_rs=25, lcd_en=24, lcd_d4=23, lcd_d5=17, lcd_d6=18, lcd_d7=22, lcd_backlight=2, cols=16, rows=2):
+        self.lcd = adaLCD.Adafruit_CharLCD(lcd_rs, lcd_en, lcd_d4, lcd_d5, lcd_d6, lcd_d7, cols, rows, lcd_backlight)
+        
+    def display_on_lcd(self, message):
+        self.clear_lcd()
+        self.lcd.message(message)
+    
+    def clear_lcd(self):
+        self.lcd.clear()

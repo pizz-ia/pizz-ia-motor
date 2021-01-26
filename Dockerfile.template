@@ -13,10 +13,8 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 
 RUN apt update && \
-    apt install python-smbus \
-                python3-dev \
+    apt install python3-dev \
                 gcc \
-                i2c-tools \
                 make \
                 -y && apt autoremove -y
 # pip install python deps from requirements.txt on the resin.io build server
