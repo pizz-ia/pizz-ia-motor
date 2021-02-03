@@ -1,21 +1,28 @@
-import uuid
-import time
-
+import requests
 from api.API import APIClient
-from camera.Camera import Camera
+from motor.Motor import MotorClient
 from lcd.LCD import LCD
-import os
 
-SAVE_PICTURE_PATH = "/data"
+PERIOD = 0.64
+
+PI_URL = "http://192.168.66.120:5000"
 
 if __name__ == "__main__":
     print("App is running")
-    cam = Camera()
-    picture_path = cam.shoot(SAVE_PICTURE_PATH, "python-test")
-    print("Picture taked")
-
-    api = APIClient("https://api.pizzia.k8s.jeremychauvin.fr")
-    api.predict(picture_path)
-
     lcd = LCD()
-    lcd.display_on_lcd('coucou')
+    lcd.clear_lcd()
+    api = APIClient("https://api.pizzia.k8s.jeremychauvin.fr")
+    motor = MotorClient()
+
+    treatment_id = None
+    while True:
+        result = api.last_predict()
+        if result.get('id', None) != treatment_id:
+            print(result.get('id', None))
+            motor.start_motor_by_period(PERIOD)
+            msg = result.get('message', "")
+            if len(msg) > 16:
+                msg = [*msg[:16], '\n', *msg[16:]]
+            lcd.display_on_lcd(msg)
+            treatment_id = result.get('id', None)
+            r = requests.get(f'{PI_URL}/picture')
